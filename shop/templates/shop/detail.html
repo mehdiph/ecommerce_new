@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'shop/detail.css' %}">
+{% endblock css %}
+
+{% block content %}
+<!-- Main Content -->
+<div class="container">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home me-1"></i> Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Smartphones</a></li>
+            <li class="breadcrumb-item"><a href="#">Apple</a></li>
+            <li class="breadcrumb-item active" aria-current="page">iPhone 13 Pro Max</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Product Gallery -->
+        <div class="col-lg-6">
+            <div class="main-image">
+                <img id="mainImage" src="https://via.placeholder.com/500x500/f8f9fa/6c757d?text=iPhone+13+Pro+Max" alt="iPhone 13 Pro Max">
+            </div>
+            
+            <div class="thumbnail-container">
+                <div class="thumbnail active" onclick="changeImage('https://via.placeholder.com/500x500/f8f9fa/6c757d?text=iPhone+13+Pro+Max')">
+                    <img src="https://via.placeholder.com/500x500/f8f9fa/6c757d?text=Front" alt="Front View">
+                </div>
+                <div class="thumbnail" onclick="changeImage('https://via.placeholder.com/500x500/f8f9fa/6c757d?text=iPhone+Back')">
+                    <img src="https://via.placeholder.com/500x500/f8f9fa/6c757d?text=Back" alt="Back View">
+                </div>
+                <div class="thumbnail" onclick="changeImage('https://via.placeholder.com/500x500/f8f9fa/6c757d?text=iPhone+Side')">
+                    <img src="https://via.placeholder.com/500x500/f8f9fa/6c757d?text=Side" alt="Side View">
+                </div>
+                <div class="thumbnail" onclick="changeImage('https://via.placeholder.com/500x500/f8f9fa/6c757d?text=iPhone+Color')">
+                    <img src="https://via.placeholder.com/500x500/f8f9fa/6c757d?text=Color" alt="Color Options">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Info -->
+        <div class="col-lg-6">
+            <div class="product-info-card">
+                <h1 class="product-title">{{ product.name }}</h1>
+                <div class="product-brand">{{ product.category }}</div>
+                
+                <div class="product-rating">
+                    <span class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </span>
+                    <span class="rating-value">4.7 (128 reviews)</span>
+                </div>
+                
+                <div class="product-price">
+                    <span class="price-old">$1,199</span>
+                    {{ product.price }}
+                    <span class="discount-badge">Save $100</span>
+                </div>
+                
+                <p class="product-description">
+                    {{ product.description }}
+                </p>
+                
+                <div class="product-meta">
+                    <div class="row">
+                        <div class="col-4 label">Availability:</div>
+                        <div class="col-8 value text-success">In Stock (25 units)</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 label">Storage:</div>
+                        <div class="col-8 value">
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-primary active">128GB</button>
+                                <button class="btn btn-sm btn-outline-primary">256GB</button>
+                                <button class="btn btn-sm btn-outline-primary">512GB</button>
+                                <button class="btn btn-sm btn-outline-primary">1TB</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 label">Color:</div>
+                        <div class="col-8 value">
+                            <div class="color-options d-flex gap-2">
+                                <div class="color-option active" style="background-color: #3c3c43; width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--primary);"></div>
+                                <div class="color-option" style="background-color: #f9e3cc; width: 30px; height: 30px; border-radius: 50%;"></div>
+                                <div class="color-option" style="background-color: #d1e3e9; width: 30px; height: 30px; border-radius: 50%;"></div>
+                                <div class="color-option" style="background-color: #e0e0e0; width: 30px; height: 30px; border-radius: 50%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-action">
+                    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                        <div class="quantity-selector">
+                            {% csrf_token %}
+                            {{ form }}
+                        </div>
+                        
+                        <button class="btn-cart" type="submit">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </form>
+                    <button class="btn-wishlist">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                
+                <div class="product-tags">
+                    <span class="tag">Smartphone</span>
+                    <span class="tag">Apple</span>
+                    <span class="tag">5G</span>
+                    <span class="tag">iOS</span>
+                    <span class="tag">Pro Camera</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Tabs -->
+    <div class="product-tabs">
+        <ul class="nav nav-tabs" id="productTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button">Description</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs" type="button">Specifications</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button">Reviews (128)</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="productTabsContent">
+            <div class="tab-pane fade show active" id="description" role="tabpanel">
+                <h4>Detailed Description</h4>
+                <p>The iPhone 13 Pro Max is the largest and most advanced model in Apple's iPhone 13 lineup. It features a stunning 6.7-inch Super Retina XDR display with ProMotion technology that automatically adjusts the refresh rate up to 120Hz for smoother scrolling and more responsive gaming.</p>
+                
+                <h5>Camera System</h5>
+                <p>The Pro camera system includes a 12MP Telephoto, Wide, and Ultra Wide cameras. The Telephoto camera has a 77mm focal length and 3x optical zoom. The Wide camera features a larger sensor with 1.9µm pixels for better low-light photos. The Ultra Wide camera with ƒ/1.8 aperture now supports Night mode.</p>
+                
+                <h5>Performance</h5>
+                <p>Powered by the A15 Bionic chip, the fastest chip ever in a smartphone, with a 6-core CPU, 5-core GPU, and 16-core Neural Engine. This enables incredible performance and efficiency for everything you do.</p>
+                
+                <h5>Battery Life</h5>
+                <p>The iPhone 13 Pro Max has the best battery life ever on iPhone, lasting up to 2.5 hours longer than iPhone 12 Pro Max. It also supports MagSafe accessories and faster wireless charging.</p>
+            </div>
+            <div class="tab-pane fade" id="specs" role="tabpanel">
+                <h4>Technical Specifications</h4>
+                <table class="specs-table">
+                    <tr>
+                        <td class="spec-name">Display</td>
+                        <td class="spec-value">6.7-inch Super Retina XDR display with ProMotion</td>
+                    </tr>
+                    <tr>
+                        <td class="spec-name">Chip</td>
+                        <td class="spec-value">A15 Bionic chip with 6-core CPU, 5-core GPU, 16-core Neural Engine</td>
+                    </tr>
+                    <tr>
+                        <td class="spec-name">Camera</td>
+                        <td class="spec-value">Pro 12MP camera system: Telephoto, Wide, and Ultra Wide cameras</td>
+                    </tr>
+                    <tr>
+                        <td class="spec-name">Video Recording</td>
+                        <td class="spec-value">4K Dolby Vision HDR up to 60fps</td>
+                    </tr>
+                    <tr>
+                        <td class="spec-name">Front Camera</td>
+                        <td class="spec-value">12MP TrueDepth camera with Night mode</td>
+                    </tr>
+                    <tr>
+                        <td class="spec-name">Battery</td>
+                        <td class="spec-value">Up to 28 hours video playback</td>
+                    </tr>
+                    <tr>
+                        <td class="spec-name">Water Resistance</td>
+                        <td class="spec-value">IP68 (maximum depth of 6 meters up to 30 minutes)</td>
+                    </tr>
+                    <tr>
+                        <td class="spec-name">Operating System</td>
+                        <td class="spec-value">iOS 15</td>
+                    </tr>
+                    <tr>
+                        <td class="spec-name">Dimensions</td>
+                        <td class="spec-value">160.8 x 78.1 x 7.65 mm</td>
+                    </tr>
+                    <tr>
+                        <td class="spec-name">Weight</td>
+                        <td class="spec-value">238 grams</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="reviews" role="tabpanel">
+                <h4>Customer Reviews</h4>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">JD</div>
+                        <div>
+                            <div class="review-author">John Doe</div>
+                            <div class="review-date">October 15, 2023</div>
+                        </div>
+                    </div>
+                    <div class="review-rating">
+                        <span class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </span>
+                    </div>
+                    <div class="review-content">
+                        <p>This is the best iPhone I've ever owned! The battery life is incredible, and the 120Hz display makes everything so smooth. The camera system is a huge upgrade from my previous iPhone.</p>
+                    </div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">MS</div>
+                        <div>
+                            <div class="review-author">Mary Smith</div>
+                            <div class="review-date">October 5, 2023</div>
+                        </div>
+                    </div>
+                    <div class="review-rating">
+                        <span class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </span>
+                    </div>
+                    <div class="review-content">
+                        <p>Love the camera and display quality. The only downside is the size - it's a bit too big for my hands. But overall, an excellent device with amazing performance.</p>
+                    </div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">RJ</div>
+                        <div>
+                            <div class="review-author">Robert Johnson</div>
+                            <div class="review-date">September 28, 2023</div>
+                        </div>
+                    </div>
+                    <div class="review-rating">
+                        <span class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <i class="far fa-star"></i>
+                        </span>
+                    </div>
+                    <div class="review-content">
+                        <p>The battery life is outstanding! I'm getting through two days with moderate use. The camera system is impressive, especially in low-light conditions. The only thing I miss is Touch ID.</p>
+                    </div>
+                </div>
+                
+                <button class="btn btn-outline-primary mt-3">Load More Reviews</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="related-products">
+        <h3 class="section-title">You May Also Like</h3>
+        <div class="row">
+            <!-- Product 1 -->
+            <div class="col-md-4">
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="https://via.placeholder.com/200x200/f8f9fa/6c757d?text=iPhone+14" alt="iPhone 14">
+                    </div>
+                    <div class="product-info">
+                        <h5 class="product-title">iPhone 14 Pro</h5>
+                        <div class="product-price">$999</div>
+                        <button class="btn btn-add-to-cart">
+                            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 2 -->
+            <div class="col-md-4">
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="https://via.placeholder.com/200x200/f8f9fa/6c757d?text=Samsung+S22" alt="Samsung S22">
+                    </div>
+                    <div class="product-info">
+                        <h5 class="product-title">Samsung Galaxy S22 Ultra</h5>
+                        <div class="product-price">$1,199</div>
+                        <button class="btn btn-add-to-cart">
+                            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 3 -->
+            <div class="col-md-4">
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="https://via.placeholder.com/200x200/f8f9fa/6c757d?text=Google+Pixel" alt="Google Pixel">
+                    </div>
+                    <div class="product-info">
+                        <h5 class="product-title">Google Pixel 7 Pro</h5>
+                        <div class="product-price">$899</div>
+                        <button class="btn btn-add-to-cart">
+                            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

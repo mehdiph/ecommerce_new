@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'orders/create.css' %}">
+{% endblock css %}
+
+{% block content %}
+<!-- Main Content -->
+<div class="container mt-5">
+    <div class="row">
+        <!-- Checkout Form -->
+        <div class="col-lg-7 mb-4">
+            <div class="checkout-container">
+                <h3 class="section-title">
+                    <i class="fas fa-user"></i> Contact Information
+                </h3>
+                
+                <div class="container">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.first_name.label_tag }}
+                                {{ form.first_name }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.last_name.label_tag }}
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                        {{ form.email.label_tag }}
+                        {{ form.email }}
+                        </div>
+
+                        <div class="mb-3">
+                        {{ form.address.label_tag }}
+                        {{ form.address }}
+                        </div>
+
+                        <div class="mb-3">
+                        {{ form.postal_code.label_tag }}
+                        {{ form.postal_code }}
+                        </div>
+                        
+                        <div class="mb-3">
+                        {{ form.city.label_tag }}
+                        {{ form.city }}
+                        </div>
+
+                        <input type="submit" class="btn btn-place-order" value="Place Order">
+                        
+                    </form>
+                </div>
+                
+                <div class="d-flex justify-content-between mt-5">
+                    <a href="#" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Return to Cart
+                    </a>
+                    <!-- <a href="#" class="btn btn-primary">
+                        Continue to Shipping <i class="fas fa-arrow-right ms-2"></i>
+                    </a> -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="col-lg-5">
+            <div class="order-summary">
+                <div class="summary-title">
+                    <span>Order Summary</span>
+                    {% with cart_total=cart|length %}
+                    <span> {{ cart_total }} item{{ cart_total|pluralize }}</span>
+                    {% endwith %}
+                </div>
+                
+                <div class="cart-items">
+                    {% for item in cart %}
+                        {% with product=item.product %}
+                            <div class="cart-item">
+                                <div class="cart-item-img">
+                                    <img src="{{ product.image.url }}" alt="iPhone">
+                                </div>
+                                <div class="cart-item-details">
+                                    <div class="cart-item-title">{{ product.name }}</div>
+                                    <div class="cart-item-qty">Qty: {{ item.quantity }}</div>
+                                    <div class="cart-item-price">${{ item.total_price }}</div>
+                                </div>
+                            </div>
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+                
+                {% with get_price_info=cart.get_total_price %}
+                <div class="summary-row">
+                    <div>Subtotal</div>
+                    <div>${{ get_price_info }}</div>
+                </div>
+                
+                <!-- <div class="summary-row">
+                    <div>Shipping</div>
+                    <div>$29.99</div>
+                </div> -->
+                
+                <div class="summary-row">
+                    <div>Tax</div>
+                    <div>${{ get_price_info }}</div>
+                </div>
+                
+                <!-- <div class="summary-row">
+                    <div>Discount</div>
+                    <div class="text-success">-$50.00</div>
+                </div> -->
+                
+                <div class="summary-row total">
+                    <div>Total</div>
+                    <div>${{ get_price_info }}</div>
+                </div>
+                {% endwith %}
+                <div class="promo-code mt-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Enter promo code">
+                        <button class="btn btn-outline-primary">Apply</button>
+                    </div>
+                </div>
+                
+                
+                <div class="mt-4 text-center">
+                    <p class="text-muted">
+                        <i class="fas fa-lock me-2"></i>
+                        Your payment is secure and encrypted
+                    </p>
+                    <div class="secure-logos mt-2">
+                        <i class="fab fa-cc-visa fa-2x me-2"></i>
+                        <i class="fab fa-cc-mastercard fa-2x me-2"></i>
+                        <i class="fab fa-cc-amex fa-2x me-2"></i>
+                        <i class="fab fa-cc-paypal fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
