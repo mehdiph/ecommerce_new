@@ -1,5 +1,6 @@
 from django import forms
 from .models import Order
+from .models import Shipping
 
 
 class OrderForm(forms.ModelForm):
@@ -9,9 +10,6 @@ class OrderForm(forms.ModelForm):
             'first_name',
             'last_name',
             'email',
-            'address',
-            'postal_code',
-            'city'
         ]
 
         widgets = {
@@ -22,6 +20,22 @@ class OrderForm(forms.ModelForm):
                 'class': 'form-control'
             }),
             'email': forms.EmailInput(attrs={
+                'class': 'form-control'
+            }),
+        }
+
+class ShippingForm(forms.ModelForm):
+    class Meta:
+        model = Shipping
+        fields = [
+            'shipping_duration',
+            'address',
+            'postal_code',
+            'city',
+        ]
+
+        widgets = {
+            'shipping_duration': forms.Select(attrs={
                 'class': 'form-control'
             }),
             'address': forms.TextInput(attrs={
