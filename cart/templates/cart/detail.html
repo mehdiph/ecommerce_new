@@ -86,34 +86,6 @@
         
         <div class="col-lg-4">
             <div class="order-summary">
-                <h3 class="summary-title">Order Summary</h3>
-                
-                {% with cart_total=cart.get_total_price %}
-                <div class="summary-row">
-                    <div>Subtotal</div>
-                    <div>${{ cart_total.total_price }}</div>
-                </div>
-
-
-                {% if cart.coupon %}
-
-                    <div class="summary-row">
-                        <div>Discount</div>
-                        <div class="text-success">-${{ cart.get_discount }}</div>
-                    </div>
-
-                    <div class="summary-row total">
-                        <div>Total</div>
-                        <div>${{ cart.get_total_price_after_discount }}</div>
-                    </div>
-
-                {% else %}
-                    <div class="summary-row total">
-                        <div>Total</div>
-                        <div>${{ cart_total }}</div>
-                    </div>
-                {% endif %}
-                {% endwith %}
                 
                 <a class="btn btn-checkout" href="{% url 'orders:order_create' %}">
                     <i class="fas fa-lock me-2"></i>Proceed to Checkout
@@ -124,16 +96,6 @@
                     <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
                 </a>
                 
-                <div class="promo-code">
-                    <h5 class="mb-3">Promo Code</h5>
-                    <div class="promo-input-group">
-                        <form action="{% url 'coupons:apply' %}" method="post">
-                            {% csrf_token %}
-                            <input type="text" class="promo-input" placeholder="Enter promo code" name="code">
-                            <button class="btn-apply" type="submit">Apply</button>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

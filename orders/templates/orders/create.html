@@ -66,65 +66,7 @@
             </div>
         </div>
         
-        <!-- Order Summary -->
-        <div class="col-lg-5">
-            <div class="order-summary">
-                <div class="summary-title">
-                    <span>Order Summary</span>
-                    {% with cart_total=cart|length %}
-                    <span> {{ cart_total }} item{{ cart_total|pluralize }}</span>
-                    {% endwith %}
-                </div>
-                
-                <div class="cart-items">
-                    {% for item in cart %}
-                        {% with product=item.product %}
-                            <div class="cart-item">
-                                <div class="cart-item-img">
-                                    <img src="{{ product.image.url }}" alt="iPhone">
-                                </div>
-                                <div class="cart-item-details">
-                                    <div class="cart-item-title">{{ product.name }}</div>
-                                    <div class="cart-item-qty">Qty: {{ item.quantity }}</div>
-                                    <div class="cart-item-price">${{ item.total_price }}</div>
-                                </div>
-                            </div>
-                        {% endwith %}
-                    {% endfor %}
-                </div>
-                
-                {% with get_price_info=cart.get_total_price %}
-                <div class="summary-row">
-                    <div>Subtotal</div>
-                    <div>${{ get_price_info }}</div>
-                </div>
-                
-                <!-- <div class="summary-row">
-                    <div>Shipping</div>
-                    <div>$29.99</div>
-                </div> -->
-                
-                <div class="summary-row">
-                    <div>Tax</div>
-                    <div>${{ get_price_info }}</div>
-                </div>
-                
-                <!-- <div class="summary-row">
-                    <div>Discount</div>
-                    <div class="text-success">-$50.00</div>
-                </div> -->
-                
-                <div class="summary-row total">
-                    <div>Total</div>
-                    <div>${{ get_price_info }}</div>
-                </div>
-                {% endwith %}
-                <div class="promo-code mt-4">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Enter promo code">
-                        <button class="btn btn-outline-primary">Apply</button>
-                    </div>
-                </div>
+        {% include 'orders/include/order_summary.html' %}
                 
                 
                 <div class="mt-4 text-center">

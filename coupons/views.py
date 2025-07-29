@@ -12,6 +12,7 @@ def coupon_apply(request):
     form = CouponApplyForm(request.POST)
     if form.is_valid():
         code = form.cleaned_data['code']
+        print(code)
         try:
             coupon = Coupon.objects.get(
                 code__iexact=code,
@@ -23,4 +24,4 @@ def coupon_apply(request):
             print("hello")
         except Coupon.DoesNotExist:
             request.session['coupon_id'] = None
-    return redirect('cart:cart_detail')
+    return redirect('orders:order_create')
